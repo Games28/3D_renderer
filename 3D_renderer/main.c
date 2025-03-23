@@ -39,6 +39,17 @@ mat4_t view_matrix;
 // Setup function to initialize variables and game objects
 ///////////////////////////////////////////////////////////////////////////////
 void setup(void) {
+
+    enum TriangleSides
+    {
+        DEFUALT,
+        FRONT,
+        RIGHT,
+        LEFT,
+        BACK,
+        TOP,
+        BOTTOM
+    };
     // Initialize render mode and triangle culling method
     set_render_method(RENDER_FILL_TRIANGLE);
     set_cull_method(CULL_BACKFACE);
@@ -58,11 +69,14 @@ void setup(void) {
     // Initialize frustum planes with a point and a normal
     init_frustum_planes(fov_x, fov_y, znear, zfar);
 
-    // Loads mesh entities
-    //load_colored_mesh("./assets/crab.obj", (0,100,255), vec3_new(1, 1, 1), vec3_new(0, 0, +5), vec3_new(0, 0, 0));
-    load_textured_mesh("./assets/mountains.obj", "./assets/crab.png", vec3_new(1, 1, 1), vec3_new(0, 0, +5), vec3_new(0, 0, 0));
-   // load_mesh("./assets/efa.obj", "./assets/efa.png", vec3_new(1, 1, 1), vec3_new(-2, -1.3, +9), vec3_new(0, -M_PI/2, 0));
-   // load_mesh("./assets/f117.obj", "./assets/f117.png", vec3_new(1, 1, 1), vec3_new(+2, -1.3, +9), vec3_new(0, -M_PI/2, 0));
+    // Loads mesh entities                                                                    //scale           //translation        //rotation
+    //right wall                                              
+    //load_cube_mesh_data("./assets/cube.obj",RIGHT, 0xffffff00, "./assets/bluestone.png", vec3_new(1, 3, 3), vec3_new(-4, 0, +5), vec3_new(0, 0, 0));
+    //left wall
+    //load_cube_mesh_data("./assets/cube.obj", LEFT, 0xff00ffff, "./assets/graystone.png", vec3_new(1, 3, 3), vec3_new(+4, 0, +5), vec3_new(0, 0, 0));
+    //floor                                                                                  //  3,1,3
+    load_cube_mesh_data("./assets/cube.obj", TOP, 0xff00ffff, "./assets/colorstone.png", vec3_new(1, 1, 1), vec3_new(0, -4, +5), vec3_new(0, 0, 0));
+  
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -129,6 +143,16 @@ void process_input(void) {
                     rotate_camera_yaw(-1.0 * delta_time);
                     break;
                 }
+                if (event.key.keysym.sym == SDLK_q)
+                {
+                    update_camera_stafing_velocity(vec3_new(+5.0f * delta_time, 0.0f, 0.0f));
+                    update_camera_position(vec3_sub(get_camera_position(), get_camera_stafing_velocity()));
+                }
+                if (event.key.keysym.sym == SDLK_e)
+                {
+                    update_camera_stafing_velocity(vec3_new(+5.0f * delta_time, 0.0f, 0.0f));
+                    update_camera_position(vec3_add(get_camera_position(), get_camera_stafing_velocity()));
+                }
                 if (event.key.keysym.sym == SDLK_UP) {
                     update_camera_forward_velocity(vec3_mul(get_camera_direction(), 5.0 * delta_time));
                     update_camera_position(vec3_add(get_camera_position(), get_camera_forward_velocity()));
@@ -185,7 +209,12 @@ void process_graphics_pipeline_stages(mesh_t* mesh) {
 
     // Loop all triangle faces of our mesh
     int num_faces = array_length(mesh->faces);
+
     for (int face_index = 0; face_index < num_faces; face_index++) {
+       //if (face_index != 0 && face_index != 1)
+       //{
+       //    continue;
+       //}
         face_t mesh_face = mesh->faces[face_index];
 
         vec3_t face_vertices[3];
@@ -289,7 +318,7 @@ void process_graphics_pipeline_stages(mesh_t* mesh) {
             float light_intensity_factor = -vec3_dot(face_normal, get_light_direction());
 
             // Calculate the triangle color based on the light angle
-            uint32_t triangle_color = apply_light_intensity(mesh_face.color, light_intensity_factor);
+           // uint32_t triangle_color = apply_light_intensity(mesh_face.color, light_intensity_factor);
 
             // Create the final projected triangle that will be rendered in screen space
             triangle_t triangle_to_render = {
@@ -303,7 +332,7 @@ void process_graphics_pipeline_stages(mesh_t* mesh) {
                     { triangle_after_clipping.texcoords[1].u, triangle_after_clipping.texcoords[1].v },
                     { triangle_after_clipping.texcoords[2].u, triangle_after_clipping.texcoords[2].v }
                 },
-                .color = triangle_color,
+                .color = mesh_face.color,
                 .texture = mesh->texture
             };
 
@@ -337,6 +366,7 @@ void update(void) {
 
     // Loop all scene meshes
     for (int mesh_index = 0; mesh_index < get_num_meshes(); mesh_index++) {
+
         mesh_t* mesh = get_mesh(mesh_index);
 
         // Change the mesh scale, rotation, and translation values per animation frame
@@ -345,6 +375,7 @@ void update(void) {
         // rotate_mesh_z(mesh_index, mesh->rotation_velocity.z * delta_time);
 
         // Process graphics pipeline stages for each mesh
+        
         process_graphics_pipeline_stages(mesh);
     }
 }

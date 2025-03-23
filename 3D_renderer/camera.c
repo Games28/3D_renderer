@@ -22,6 +22,11 @@ vec3_t get_camera_forward_velocity(void) {
     return camera.forward_velocity;
 }
 
+vec3_t get_camera_stafing_velocity(void)
+{
+    return camera.strafe_velocity;
+}
+
 float get_camera_yaw(void) {
     return camera.yaw;
 }
@@ -40,6 +45,11 @@ void update_camera_direction(vec3_t direction) {
 
 void update_camera_forward_velocity(vec3_t forward_velocity) {
     camera.forward_velocity = forward_velocity;
+}
+
+void update_camera_stafing_velocity(vec3_t stafe_velocity)
+{
+    camera.strafe_velocity = stafe_velocity;
 }
 
 void rotate_camera_yaw(float angle) {
