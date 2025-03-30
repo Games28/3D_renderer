@@ -4,7 +4,7 @@
 #include "mesh.h"
 
 
-#define MAX_NUM_MESHES 100
+#define MAX_NUM_MESHES 500
 static mesh_t meshes[MAX_NUM_MESHES];
 static int mesh_count = 0;
 
@@ -181,110 +181,110 @@ void load_cube_mesh_data(mesh_t* mesh, int side, uint32_t color, char* png_filen
    
 
 
-    for (int i = 0; i < N_CUBE_VERTICES; i++)
-    {
-         vec3_t cube_vertex = cube_vertices[i];
-         array_push(meshes[mesh_count].vertices, cube_vertex);
-        
-       
+ for (int i = 0; i < N_CUBE_VERTICES; i++)
+ {
+      vec3_t cube_vertex = cube_vertices[i];
+      array_push(meshes[mesh_count].vertices, cube_vertex);
+     
     
-    }
+ 
+ }
 
    
 
-   // for (int i = 0; i < N_CUBE_FACES; i++)
-    {
-        switch (side)
-        {
-        case 1: //front
-        {
-            //if (i == 0 || i == 1)
-            {
-                face_t cube_face0 = cube_faces[0];
-                cube_face0.color = color;
-                array_push(meshes[mesh_count].faces, cube_face0);
-                face_t cube_face1 = cube_faces[1];
-                cube_face1.color = color;
-                array_push(meshes[mesh_count].faces, cube_face1);
-            }
-        }break;
-
-        case 2:  //right
-        {
-            //if (i == 2 || i == 3)
-            {
-                face_t cube_face2 = cube_faces[2];
-                cube_face2.color = color;
-                array_push(meshes[mesh_count].faces, cube_face2);
-                face_t cube_face3 = cube_faces[3];
-                cube_face3.color = color;
-                array_push(meshes[mesh_count].faces, cube_face3);
-            }
-        }break;
-
-        case 3:  //left
-        {
-           // if (i == 6 || i == 7)
-            {
-                face_t cube_face6 = cube_faces[6];
-                cube_face6.color = color;
-                array_push(meshes[mesh_count].faces, cube_face6);
-                face_t cube_face7 = cube_faces[7];
-                cube_face7.color = color;
-                array_push(meshes[mesh_count].faces, cube_face7);
-            }
-        }break;
-
-        case 4:  //back
-        {
-            //if (i == 4 || i == 5)
-            {
-                face_t cube_face4 = cube_faces[4];
-                cube_face4.color = color;
-                array_push(meshes[mesh_count].faces, cube_face4);
-                face_t cube_face5 = cube_faces[5];
-                cube_face5.color = color;
-                array_push(meshes[mesh_count].faces, cube_face5);;
-            }
-        }break;
-
-        case 5:  //top
-        {
-           // if (i == 8 || i == 9)
-            {
-                face_t cube_face8 = cube_faces[8];
-                cube_face8.color = color;
-                array_push(meshes[mesh_count].faces, cube_face8);
-                face_t cube_face9 = cube_faces[9];
-                cube_face9.color = color;
-                array_push(meshes[mesh_count].faces, cube_face9);
-            }
-        }break;
-
-        case 6:  //bottom
-        {
-            //if (i == 10 || i == 11)
-            {
-                face_t cube_face10 = cube_faces[10];
-                cube_face10.color = color;
-                array_push(meshes[mesh_count].faces, cube_face10);
-                face_t cube_face11 = cube_faces[11];
-                cube_face11.color = color;
-                array_push(meshes[mesh_count].faces, cube_face11);
-            }
-        }break;
-
-        default:
-        {
-            for (int i = 0; i < N_CUBE_FACES; i++)
-            {
-                face_t cube_face = cube_faces[i];
-                array_push(meshes[mesh_count].faces, cube_face);
-            }
-        }break;
-        }
-       
-    }
+   //for (int i = 0; i < N_CUBE_FACES; i++)
+  {
+      switch (side)
+      {
+      case 1: //front
+      {
+          //if (i == 0 || i == 1)
+          {
+              face_t cube_face0 = cube_faces[0];
+              cube_face0.color = color;
+              array_push(meshes[mesh_count].faces, cube_face0);
+              face_t cube_face1 = cube_faces[1];
+              cube_face1.color = color;
+              array_push(meshes[mesh_count].faces, cube_face1);
+          }
+      }break;
+  
+      case 2:  //right
+      {
+          //if (i == 2 || i == 3)
+          {
+              face_t cube_face2 = cube_faces[2];
+              cube_face2.color = color;
+              array_push(meshes[mesh_count].faces, cube_face2);
+              face_t cube_face3 = cube_faces[3];
+              cube_face3.color = color;
+              array_push(meshes[mesh_count].faces, cube_face3);
+          }
+      }break;
+  
+      case 3:  //left
+      {
+         // if (i == 6 || i == 7)
+          {
+              face_t cube_face6 = cube_faces[6];
+              cube_face6.color = color;
+              array_push(meshes[mesh_count].faces, cube_face6);
+              face_t cube_face7 = cube_faces[7];
+              cube_face7.color = color;
+              array_push(meshes[mesh_count].faces, cube_face7);
+          }
+      }break;
+  
+      case 4:  //back
+      {
+          //if (i == 4 || i == 5)
+          {
+              face_t cube_face4 = cube_faces[4];
+              cube_face4.color = color;
+              array_push(meshes[mesh_count].faces, cube_face4);
+              face_t cube_face5 = cube_faces[5];
+              cube_face5.color = color;
+              array_push(meshes[mesh_count].faces, cube_face5);;
+          }
+      }break;
+  
+      case 5:  //top
+      {
+         // if (i == 8 || i == 9)
+          {
+              face_t cube_face8 = cube_faces[8];
+              cube_face8.color = color;
+              array_push(meshes[mesh_count].faces, cube_face8);
+              face_t cube_face9 = cube_faces[9];
+              cube_face9.color = color;
+              array_push(meshes[mesh_count].faces, cube_face9);
+          }
+      }break;
+  
+      case 6:  //bottom
+      {
+          //if (i == 10 || i == 11)
+          {
+              face_t cube_face10 = cube_faces[10];
+              cube_face10.color = color;
+              array_push(meshes[mesh_count].faces, cube_face10);
+              face_t cube_face11 = cube_faces[11];
+              cube_face11.color = color;
+              array_push(meshes[mesh_count].faces, cube_face11);
+          }
+      }break;
+  
+      default:
+      {
+          for (int i = 0; i < N_CUBE_FACES; i++)
+          {
+              face_t cube_face = cube_faces[i];
+              array_push(meshes[mesh_count].faces, cube_face);
+          }
+      }break;
+      }
+     
+  }
 
    load_mesh_png_data(&meshes[mesh_count], png_filename);
 

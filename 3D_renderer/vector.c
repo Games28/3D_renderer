@@ -154,6 +154,30 @@ vec3_t vec3_rotate_z(vec3_t v, float angle) {
     return rotated_vector;
 }
 
+int vec3_less_than(vec3_t v1, vec3_t v2)
+{
+    if (v1.x < v2.x && v1.y < v2.y && v1.z < v2.z)
+    {
+        return 0;
+   }
+    else
+    {
+        return 1;
+    }
+}
+
+int vec3_greater_than(vec3_t v1, vec3_t v2)
+{
+    if (v1.x > v2.x && v1.y > v2.y && v1.z > v2.z)
+    {
+        return 0;
+    }
+    else
+    {
+        return 1;
+    }
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 // Implementations of Vector conversion functions
 ///////////////////////////////////////////////////////////////////////////////

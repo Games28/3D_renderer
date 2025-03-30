@@ -154,6 +154,7 @@
     <ClCompile Include="vector.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="aabb3.h" />
     <ClInclude Include="array.h" />
     <ClInclude Include="camera.h" />
     <ClInclude Include="clipping.h" />

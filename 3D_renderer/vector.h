@@ -40,6 +40,8 @@ void vec3_normalize(vec3_t* v);
 vec3_t vec3_rotate_x(vec3_t v, float angle);
 vec3_t vec3_rotate_y(vec3_t v, float angle);
 vec3_t vec3_rotate_z(vec3_t v, float angle);
+int vec3_less_than(vec3_t v1, vec3_t v2);
+int vec3_greater_than(vec3_t v1, vec3_t v2);
 
 ////////////////////////////////////////////////////////////////////////////////
 // Vector conversion functions
@@ -47,5 +49,8 @@ vec3_t vec3_rotate_z(vec3_t v, float angle);
 vec4_t vec4_from_vec3(vec3_t v);
 vec3_t vec3_from_vec4(vec4_t v);
 vec2_t vec2_from_vec4(vec4_t v);
+
+
+
 
 #endif

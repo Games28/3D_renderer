@@ -92,5 +92,8 @@
     <ClInclude Include="vector.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="aabb3.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

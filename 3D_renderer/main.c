@@ -2,17 +2,20 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include <SDL.h>
+
 #include "upng.h"
 #include "array.h"
 #include "display.h"
 #include "triangle.h"
 #include "clipping.h"
+//#include "aabb3.h"
 #include "vector.h"
 #include "matrix.h"
 #include "light.h"
 #include "camera.h"
 #include "texture.h"
 #include "mesh.h"
+
 
 ///////////////////////////////////////////////////////////////////////////////
 // Global variables for execution status and game loop
@@ -40,6 +43,7 @@ mat4_t view_matrix;
 ///////////////////////////////////////////////////////////////////////////////
 void setup(void) {
 
+    int tilecount = 10;
     enum TriangleSides
     {
         DEFUALT,
@@ -62,20 +66,71 @@ void setup(void) {
     float aspect_x = (float)get_window_width() / (float)get_window_height();
     float fov_y = 3.141592 / 3.0; // the same as 180/3, or 60deg
     float fov_x = atan(tan(fov_y / 2) * aspect_x) * 2;
-    float znear = 1.0;
-    float zfar = 50.0;
+    float znear = 0.1f;
+    float zfar = 100.0;
     proj_matrix = mat4_make_perspective(fov_y, aspect_y, znear, zfar);
 
     // Initialize frustum planes with a point and a normal
     init_frustum_planes(fov_x, fov_y, znear, zfar);
 
+    //load_textured_mesh("./assets/mountains.obj", "./assets/graystone.png", vec3_new(1, 3, 3), vec3_new(+4, 0, +5), vec3_new(0, 0, 0));
     // Loads mesh entities                                                                    //scale           //translation        //rotation
     //right wall                                              
-    //load_cube_mesh_data("./assets/cube.obj",RIGHT, 0xffffff00, "./assets/bluestone.png", vec3_new(1, 3, 3), vec3_new(-4, 0, +5), vec3_new(0, 0, 0));
+   // load_cube_mesh_data("./assets/cube.obj",RIGHT, 0xffffff00, "./assets/bluestone.png", vec3_new(1, 3, 3), vec3_new(-4, 0, +5), vec3_new(0, 0, 0));
     //left wall
     //load_cube_mesh_data("./assets/cube.obj", LEFT, 0xff00ffff, "./assets/graystone.png", vec3_new(1, 3, 3), vec3_new(+4, 0, +5), vec3_new(0, 0, 0));
-    //floor                                                                                  //  3,1,3
-    load_cube_mesh_data("./assets/cube.obj", TOP, 0xff00ffff, "./assets/colorstone.png", vec3_new(1, 1, 1), vec3_new(0, -4, +5), vec3_new(0, 0, 0));
+    //floor 
+   // load_cube_mesh_data("./assets/cube.obj", TOP, 0xff00ffff, "./assets/colorstone.png", vec3_new(1, 1, 1), vec3_new(0, -4,+7), vec3_new(0, 0, 0));
+    //load_cube_mesh_data("./assets/cube.obj", TOP, 0xff00ffff, "./assets/colorstone.png", vec3_new(1, 1, 1), vec3_new(-2, -4, +9), vec3_new(0, 0, 0));
+    
+    //west walls /right side
+
+    for (int z = 0; z < tilecount * 2; z += 2)
+    {
+        load_cube_mesh_data("./assets/cube.obj", RIGHT, 0xffffff00, "./assets/bluestone.png", vec3_new(1, 1, 1), vec3_new(-7, 0, -2 + z), vec3_new(0, 0, 0));
+    }
+
+    //east walls/ left side
+    for (int z = 0; z < tilecount * 2; z += 2)
+    {
+        load_cube_mesh_data("./assets/cube.obj", LEFT, 0xffffff00, "./assets/bluestone.png", vec3_new(1, 1, 1), vec3_new(+13, 0, -2 + z), vec3_new(0, 0, 0));
+    }
+
+    //back wall / front side
+    for (int x = 0; x < tilecount * 2; x += 2)
+    {
+        load_cube_mesh_data("./assets/cube.obj", FRONT, 0xffffff00, "./assets/bluestone.png", vec3_new(1, 1, 1), vec3_new(-7 + x, 0, +10), vec3_new(0, 0, 0));
+    }
+
+
+    //front wall / back side
+    for (int x = 0; x < tilecount * 2; x += 2)
+    {
+        load_cube_mesh_data("./assets/cube.obj", BACK, 0xffffff00, "./assets/bluestone.png", vec3_new(1, 1, 1), vec3_new(-7 + x, 0, -2), vec3_new(0, 0, 0));
+    }
+
+    //floor
+   for (int x = -5; x < tilecount * 2; x+= 2)
+   {
+     
+      for (int z = 0; z < tilecount * 2; z += 2)
+      {
+          load_cube_mesh_data("./assets/cube.obj", TOP, 0xff00ffff, "./assets/colorstone.png", vec3_new(1, 1, 1), vec3_new(x, -2, -2 + z), vec3_new(0, 0, 0));
+      }
+      
+   }
+   
+   //ceiling
+
+  //for (int x = -5; x < tilecount * 2; x += 2)
+  //{
+  //
+  //    for (int z = 0; z < tilecount * 2; z += 2)
+  //    {
+  //        load_cube_mesh_data("./assets/cube.obj", BOTTOM, 0xff00ffff, "./assets/wood.png", vec3_new(1, 1, 1), vec3_new(x, +2, -2 + z), vec3_new(0, 0, 0));
+  //    }
+  //
+  //}
   
 }
 
@@ -378,6 +433,11 @@ void update(void) {
         
         process_graphics_pipeline_stages(mesh);
     }
+
+
+    //collision test
+
+
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -385,10 +445,12 @@ void update(void) {
 ///////////////////////////////////////////////////////////////////////////////
 void render(void) {
     // Clear all the arrays to get ready for the next frame
-    clear_color_buffer(0xFF000000);
+    clear_color_buffer(0xFFffff00);
     clear_z_buffer();
     
-    draw_grid();
+    //draw_grid();
+
+
 
     // Loop all triangles from the triangles_to_render array
     for (int i = 0; i < triangles_to_render_count; i++) {

@@ -4,6 +4,7 @@
 #include "vector.h"
 #include "triangle.h"
 #include "upng.h"
+//#include "aabb3.h"
 
 #define N_CUBE_VERTICES 8
 
@@ -40,5 +41,9 @@ void rotate_mesh_y(int mesh_index, float angle);
 void rotate_mesh_z(int mesh_index, float angle);
 
 void free_meshes(void);
+
+//aabb3 test
+//AABB3 GetAABB() const;
+
 
 #endif
